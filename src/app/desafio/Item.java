@@ -10,6 +10,8 @@ public class Item
     private final int unitPrice;
     private final int amount;
 
+    final static int MAX_ITEM_ARR_SIZE = 3;
+
     public Item(String itemName, int unitPrice, int amount)
     {
         this.itemName = itemName;
