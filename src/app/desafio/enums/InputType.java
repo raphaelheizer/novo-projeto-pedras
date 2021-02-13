@@ -1,4 +1,4 @@
-package app.desafio;
+package app.desafio.enums;
 
 /**
  * Stores the current user action and sets the insertion mode on the console. <br>

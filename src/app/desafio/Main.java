@@ -1,19 +1,19 @@
 package app.desafio;
 
+import app.desafio.enums.InputType;
+import app.desafio.models.Email;
+import app.desafio.models.EmailList;
+import app.desafio.models.Item;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 public class Main
 {
-
-    /* Declaring global color codes for use in terminal.
-    important: user terminal must support color coding. */
-    private static final String ANSI_RED = "\u001B[31m";
-    private static final String ANSI_RESET = "\u001B[0m";
-    private static final String ANSI_YELLOW = "\u001B[33m";
 
     // Manages the user input state. User can input any commands if true
     static boolean keepListening = true;
@@ -32,12 +32,12 @@ public class Main
         // Greeting message and help command hint
         System.out.println(
                 "\n" +
-                        "Bem vindo à aplicação candidata ao Desafio Stone - Elixir. by Raphael Heizer\n" +
+                        "Bem vindo à aplicação candidata ao Desafio Stone - Elixir. v.1.0.0 by Raphael Heizer\n" +
                         "Você pode acessar a documentação ou o código-fonte desta aplicação através do link " +
                         "https://github.com/raphaelheizer/desafio-elixir-stone-java/\n" +
                         "Muito obrigado por dispor do seu tempo!\n\n" +
 
-                        ANSI_RED + "Caso precise de ajuda, use o comando help ou ajuda.\n" + ANSI_RESET
+                        "Caso precise de ajuda, use o comando help ou ajuda.\n"
         );
 
         // Initializes the console so user can interact
@@ -72,6 +72,10 @@ public class Main
 
             } catch (IOException e)
             {
+                // The application will crash since it cannot work without the current try block. Warning user.
+                System.out.println("Não foi possível inicializar o programa." +
+                        "Neste instante, houve uma tentativa de inicializar um StreamReader e um BufferedReader.\n" +
+                        "Logo, há grandes chances de uma instalação ruim do JVM estar causando este erro.");
                 e.printStackTrace();
             }
         }
@@ -122,35 +126,72 @@ public class Main
                 inputType = InputType.NONE;
             }
 
+            // Splitting amounts between e-mails
+            case "split" -> {
+                System.out
+                        .println("\nDividindo valores entre os participantes. Valores com restos serão distribuídos\n" +
+                                "de maneira igualitária, onde o resto será dividido unitariamente entre os participantes.\n" +
+                                "Exemplo.: Se o resto for 5 centavos," +
+                                " será adicionado 1 centavo para os primeiros cinco emails." + "\n\n" +
+                                "Resultado: \n");
+
+                DueValueCalculator dueValueCalculator = new DueValueCalculator(emailList, itemArrayList);
+
+                Map<String, Integer> resultingValuesMap = dueValueCalculator.divideValueByEmails();
+
+                System.out.println(resultingValuesMap);
+            }
+
             // Listing current mem stored data
-            case "list item" -> System.out.printf("Listando todos os itens:\n%s\n", itemArrayList.toString());
-            case "list email" -> System.out.printf("Listando todos os e-mails:\n%s\n", emailList.toString());
+            case "list item", "list items" -> System.out
+                    .printf("Listando todos os itens:\n%s\n", itemArrayList.toString());
+            case "list email", "list emails" -> System.out
+                    .printf("Listando todos os e-mails:\n%s\n", emailList.toString());
+
+            case "clear email", "clear emails" -> emailList.clear();
+
+            case "clear item", "clear items" -> itemArrayList.clear();
+
+            case "clear all" -> {
+                emailList.clear();
+                itemArrayList.clear();
+            }
 
             // Lists App info and available commands
-            case "help", "ajuda" -> {
+            case "help", "ajuda" -> System.out.println(
+                    "\n" +
+                            "Desafio Stone - Elixir by Raphael Heizer, v.1.00\n" +
+                            "O prompt aceita os seguintes comandos, todos em caixa baixa:\n\n" +
 
-                // Help message
-                System.out.println(
-                        "\n" +
-                                ANSI_YELLOW + "Desafio Stone - Elixir by Raphael Heizer, v.0.01\n" +
-                                "O prompt aceita os seguintes comandos, todos em caixa baixa:\n\n" + ANSI_RESET +
+                            "exit (ou) sair: Encerra a aplicação.\n\n" +
 
-                                "exit (ou) sair: Encerra a aplicação.\n\n" +
+                            "add item: Entra no modo de inserção de objetos do tipo Item.\n" +
+                            "Ou seja, você só poderá digitar os itens" +
+                            " após entrar no modo de inserção.\n" +
+                            "O cursor mudará para ITEM e todas as inserções " +
+                            "deverão ter o formato [ITEM, PREÇO, QUANTIDADE].\n" +
+                            "As unidades trabalhadas sempre serão centavos e gramas.\n" +
+                            "Ex.: \"banana, 6500, 500\", sem as aspas.\n\n" +
 
-                                "add item: Entra no modo de inserção de objetos do tipo Item.\n" +
-                                "O cursor mudará para ITEM e todas as inserções" +
-                                "deverão ter o formato [ITEM, PREÇO, QUANTIDADE].\n" +
-                                "As unidades trabalhadas sempre serão centavos e gramas.\n" +
-                                "Ex.: \"banana, 150, 5\", sem as aspas.\n\n" +
+                            "add email: Adiciona um novo objeto do tipo E-mail à memória.\n\n" +
 
-                                "add email: Adiciona um novo objeto do tipo E-mail à memória.\n\n" +
+                            "add none: Sai do modo de inserção de objetos.\n\n" +
 
-                                "add none: Sai do modo de inserção de objetos.\n\n" +
+                            "split: Divide o valor total dos itens pela quantidade de e-mails.\n" +
+                            "Se a divisão possuir resto, este será dividido unitariamente pela quantidade " +
+                            "de e-mails.\n" +
+                            "Exemplo: Se o resto da divisão por 5, distribuiremos um centavo " +
+                            "aos 5 primeiros e-mails.\n\n" +
 
-                                "list item (ou) list items: Lista todos os itens adicionados em memória.\n\n" +
+                            "clear email (ou) clear emails: limpa a lista de e-mails\n\n" +
 
-                                "list email (ou) list emails: Lista todos os e-mails adicionados em memória.\n");
-            }
+                            "clear items (ou) clear items: limpa a lista de items\n\n" +
+
+                            "clear all: limpa dos as listas\n\n" +
+
+                            "list item (ou) list items: Lista todos os itens adicionados em memória.\n\n" +
+
+                            "list email (ou) list emails: Lista todos os e-mails adicionados em memória.\n");
 
             /*
                 If it doesn't match any command line case, try split, trim and parse the String as a subcommand.
@@ -173,9 +214,9 @@ public class Main
 
     /**
      * Parses an array of String and tries to execute a subcommand.
-     * @apiNote Subcommands are actions derived from standard commands such as add item or add email.
      *
      * @param commandArray Array to be parsed as command
+     * @apiNote Subcommands are actions derived from standard commands such as add item or add email.
      */
     static boolean parseSubCommand(String[] commandArray)
     {
@@ -194,8 +235,18 @@ public class Main
                         System.out.println("Um item não pode ter um campo vazio.");
                     } else
                     {
-                        // TODO: IMPLEMENT
-                        System.out.println("Ok, comando recebido. ME IMPLEMENTE");
+                        /* If the command throws input errors,
+                         * tells user he must only input numbers in price and amount fields
+                         * Warning: only NumberFormatException errors are expected. */
+                        try
+                        {
+                            itemArrayList.add(new Item(commandArray[0], Integer.parseInt(commandArray[1]), Integer
+                                    .parseInt(commandArray[2])));
+                        } catch (NumberFormatException nfe)
+                        {
+                            System.out.println("ERRO: Input inválido! " +
+                                    "Certifique que inseriu apenas números nos campos de valor e quantidade.");
+                        }
                     }
                     return true;
                 }
@@ -210,8 +261,7 @@ public class Main
                     System.out.println("O e-mail precisa ter um formato válido!");
                 } else
                 {
-                    // TODO: IMPLEMENT
-                    System.out.println("Ok, comando recebido! ME IMPLEMENTE");
+                    emailList.add(new Email(c));
                 }
                 return true;
             }
