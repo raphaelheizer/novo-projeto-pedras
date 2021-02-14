@@ -80,8 +80,8 @@ public class DueValueCalculator
 
         } catch (ArithmeticException ae)
         {
-            System.out.println("Não é possível dividir por zero! Certifique-se que a lista de e-mails tem ao menos" +
-                    "um e-mail");
+            System.out.println("Uma ou mais listas estão vazias! Não é possível realizar esta operação com uma lista " +
+                    "vazia. Você pode verificar com os comandos list item e list email.");
         }
 
         for (Email email : this.emailList)

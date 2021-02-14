@@ -34,7 +34,7 @@ public class Main
                 "\n" +
                         "Bem vindo à aplicação candidata ao Desafio Stone - Elixir. v.1.0.0 by Raphael Heizer\n" +
                         "Você pode acessar a documentação ou o código-fonte desta aplicação através do link " +
-                        "https://github.com/raphaelheizer/desafio-elixir-stone-java/\n" +
+                        "https://github.com/raphaelheizer/novo-projeto-pedras/\n" +
                         "Muito obrigado por dispor do seu tempo!\n\n" +
 
                         "Caso precise de ajuda, use o comando help ou ajuda.\n"
@@ -160,7 +160,7 @@ public class Main
             // Lists App info and available commands
             case "help", "ajuda" -> System.out.println(
                     "\n" +
-                            "Desafio Stone - Elixir by Raphael Heizer, v.1.00\n" +
+                            "Desafio Stone - Elixir by Raphael Heizer, v.1.01\n" +
                             "O prompt aceita os seguintes comandos, todos em caixa baixa:\n\n" +
 
                             "exit (ou) sair: Encerra a aplicação.\n\n" +
@@ -169,8 +169,8 @@ public class Main
                             "Ou seja, você só poderá digitar os itens" +
                             " após entrar no modo de inserção.\n" +
                             "O cursor mudará para ITEM e todas as inserções " +
-                            "deverão ter o formato [ITEM, PREÇO, QUANTIDADE].\n" +
-                            "As unidades trabalhadas sempre serão centavos e gramas.\n" +
+                            "deverão ter o formato ITEM, PREÇO, QUANTIDADE.\n" +
+                            "As unidades trabalhadas sempre serão centavos e gramas (caso seja uma medida de peso/massa).\n" +
                             "Ex.: \"banana, 6500, 500\", sem as aspas.\n\n" +
 
                             "add email: Adiciona um novo objeto do tipo E-mail à memória.\n\n" +
@@ -180,14 +180,14 @@ public class Main
                             "split: Divide o valor total dos itens pela quantidade de e-mails.\n" +
                             "Se a divisão possuir resto, este será dividido unitariamente pela quantidade " +
                             "de e-mails.\n" +
-                            "Exemplo: Se o resto da divisão por 5, distribuiremos um centavo " +
+                            "Exemplo: Se o resto da divisão for 5, distribuiremos um centavo " +
                             "aos 5 primeiros e-mails.\n\n" +
 
                             "clear email (ou) clear emails: limpa a lista de e-mails\n\n" +
 
                             "clear items (ou) clear items: limpa a lista de items\n\n" +
 
-                            "clear all: limpa dos as listas\n\n" +
+                            "clear all: limpa todas as listas\n\n" +
 
                             "list item (ou) list items: Lista todos os itens adicionados em memória.\n\n" +
 
